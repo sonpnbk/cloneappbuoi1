@@ -6,7 +6,7 @@ import { Storage } from '@ionic/storage';
 
 @Injectable()
 export class UserData {
-  _favorites: string[] = [];
+  arrfavorites: string[] = [];//mang favorite
   HAS_LOGGED_IN = 'hasLoggedIn';
   HAS_SEEN_TUTORIAL = 'hasSeenTutorial';
 
@@ -14,19 +14,22 @@ export class UserData {
     public events: Events,
     public storage: Storage
   ) {}
-
-  hasFavorite(sessionName: string): boolean {
-    return (this._favorites.indexOf(sessionName) > -1);
+  // kiem tra xem da sessionName da co trong favorite chua.
+  kiemtraF(sessionName: string): boolean {
+    return (this.arrfavorites.indexOf(sessionName) > -1);
   };
 
-  addFavorite(sessionName: string): void {
-    this._favorites.push(sessionName);
+
+  // them favorite
+  themF(sessionName: string): void {
+    this.arrfavorites.push(sessionName);
   };
 
-  removeFavorite(sessionName: string): void {
-    let index = this._favorites.indexOf(sessionName);
+  // xoa favorite
+  xoaF(sessionName: string): void {
+    let index = this.arrfavorites.indexOf(sessionName);
     if (index > -1) {
-      this._favorites.splice(index, 1);
+      this.arrfavorites.splice(index, 1);
     }
   };
 
