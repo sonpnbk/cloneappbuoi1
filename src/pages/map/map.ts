@@ -17,6 +17,7 @@ export class MapPage {
   @ViewChild('mymaps') eRef:ElementRef;
   constructor(public navCtrl: NavController, private navParam: NavParams) {
   }
+
   ionViewDidLoad(){
     this.loadMap();
   }
