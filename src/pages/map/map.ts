@@ -1,9 +1,10 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef,NgModule } from '@angular/core';
 
 import { ConferenceData } from '../../providers/conference-data';
-
-import { Platform } from 'ionic-angular';
-
+import {GoogleMaps,GoogleMap,GoogleMapsEvent, GoogleMapOptions,CameraPosition,MarkerOptions,  Marker} from '@ionic-native/google-maps';
+ 
+import { Platform ,NavController, NavParams } from 'ionic-angular';
+import { AgmCoreModule } from '@agm/core';
 
 declare var google: any;
 
@@ -13,42 +14,20 @@ declare var google: any;
   templateUrl: 'map.html'
 })
 export class MapPage {
-
-  @ViewChild('mapCanvas') mapElement: ElementRef;
-  constructor(public confData: ConferenceData, public platform: Platform) {
+  @ViewChild('mymaps') eRef:ElementRef;
+  constructor(public navCtrl: NavController, private navParam: NavParams) {
   }
 
-  ionViewDidLoad() {
-
-      this.confData.getMap().subscribe((mapData: any) => {
-        let mapEle = this.mapElement.nativeElement;
-
-        let map = new google.maps.Map(mapEle, {
-          center: mapData.find((d: any) => d.center),
-          zoom: 16
-        });
-
-        mapData.forEach((markerData: any) => {
-          let infoWindow = new google.maps.InfoWindow({
-            content: `<h5>${markerData.name}</h5>`
-          });
-
-          let marker = new google.maps.Marker({
-            position: markerData,
-            map: map,
-            title: markerData.name
-          });
-
-          marker.addListener('click', () => {
-            infoWindow.open(map, marker);
-          });
-        });
-
-        google.maps.event.addListenerOnce(map, 'idle', () => {
-          mapEle.classList.add('show-map');
-        });
-
-      });
-
+  ionViewDidLoad(){
+    this.loadMap();
   }
+  loadMap(){
+    const location = new google.maps.LatLng('21.027764','105.834160');
+    const options ={
+      center: location,
+      zoom:10
+    };
+    const map = new google.maps.Map(this.eRef.nativeElement,options);
+  }
+ 
 }

@@ -124,7 +124,7 @@ export class ConferenceData {
     // then this session does not pass the segment test
     let matchesSegment = false;
     if (segment === 'favorites') {
-      if (this.user.hasFavorite(session.name)) {
+      if (this.user.kiemtraF(session.name)) {
         matchesSegment = true;
       }
     } else {
