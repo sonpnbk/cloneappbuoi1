@@ -8,12 +8,13 @@ import { PopoverPage } from '../about-popover/about-popover';
   templateUrl: 'about.html'
 })
 export class AboutPage {
-  conferenceDate = '2047-05-17';
+  conferenceDate = '1995-06-15';
 
   constructor(public popoverCtrl: PopoverController) { }
 
   presentPopover(event: Event) {
     let popover = this.popoverCtrl.create(PopoverPage);
     popover.present({ ev: event });
+    console.log(event);
   }
 }

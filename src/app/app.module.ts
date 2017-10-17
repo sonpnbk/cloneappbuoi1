@@ -25,7 +25,7 @@ import { SpeakerListPage } from '../pages/speaker-list/speaker-list';
 import { TabsPage } from '../pages/tabs-page/tabs-page';
 import { TutorialPage } from '../pages/tutorial/tutorial';
 import { SupportPage } from '../pages/support/support';
-
+import { SpeakershowPage} from '../pages/speakershow/speakershow';
 import { ConferenceData } from '../providers/conference-data';
 import { UserData } from '../providers/user-data';
 
@@ -42,6 +42,7 @@ import { GoogleMaps} from '@ionic-native/google-maps';
     ScheduleFilterPage,
     SessionDetailPage,
     SignupPage,
+    SpeakershowPage,
     SpeakerDetailPage,
     SpeakerListPage,
     TabsPage,
@@ -76,6 +77,7 @@ import { GoogleMaps} from '@ionic-native/google-maps';
     AboutPage,
     AccountPage,
     LoginPage,
+    SpeakershowPage,
     MapPage,
     PopoverPage,
     SchedulePage,

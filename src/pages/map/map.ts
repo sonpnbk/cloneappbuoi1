@@ -4,7 +4,6 @@ import { ConferenceData } from '../../providers/conference-data';
 import {GoogleMaps,GoogleMap,GoogleMapsEvent, GoogleMapOptions,CameraPosition,MarkerOptions,  Marker} from '@ionic-native/google-maps';
  
 import { Platform ,NavController, NavParams } from 'ionic-angular';
-import { AgmCoreModule } from '@agm/core';
 
 declare var google: any;
 

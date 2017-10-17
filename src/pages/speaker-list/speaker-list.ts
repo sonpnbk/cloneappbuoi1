@@ -5,12 +5,13 @@ import {
   ActionSheetController,
   ActionSheetOptions,
   Config,
+  ModalController,
   NavController
 } from 'ionic-angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 import { ConferenceData } from '../../providers/conference-data';
-
+import {SpeakershowPage} from '../speakershow/speakershow';
 import { SessionDetailPage } from '../session-detail/session-detail';
 import { SpeakerDetailPage } from '../speaker-detail/speaker-detail';
 
@@ -36,13 +37,19 @@ export class SpeakerListPage {
     public navCtrl: NavController,
     public confData: ConferenceData,
     public config: Config,
+    public modelCtrl : ModalController,
     public inAppBrowser: InAppBrowser
   ) {}
 
   ionViewDidLoad() {
-    this.confData.getSpeakers().subscribe((speakers: any[]) => {
+    this.confData.getSpeakers(null).subscribe((speakers: any[]) => {
       this.speakers = speakers;
     });
+  }
+  showFilter(){
+
+   let model = this.modelCtrl.create(SpeakershowPage);
+    model.present();
   }
 
   goToSessionDetail(session: any) {

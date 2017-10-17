@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 
-import { MenuController, NavController, Slides } from 'ionic-angular';
+import { MenuController, NavController, Slides, AlertController } from 'ionic-angular';
 
 import { Storage } from '@ionic/storage';
 
@@ -19,7 +19,8 @@ export class TutorialPage {
   constructor(
     public navCtrl: NavController,
     public menu: MenuController,
-    public storage: Storage
+    public storage: Storage,
+    public alertCtrl: AlertController
   ) { }
 
   startApp() {
@@ -30,6 +31,7 @@ export class TutorialPage {
 
   onSlideChangeStart(slider: Slides) {
     this.showSkip = !slider.isEnd();
+    console.log(slider.container.baseURI);
   }
 
   ionViewWillEnter() {
