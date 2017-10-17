@@ -16,19 +16,24 @@ export class ConferenceData {
   constructor(public http: Http, public user: UserData) { }
 
   load(): any {
+    // neu da ton tại data
     if (this.data) {
       return Observable.of(this.data);
     } else {
+      // neu chua co thi doc data trong assets với http-json
       return this.http.get('assets/data/data.json')
         .map(this.processData, this);
     }
   }
 
   processData(data: any) {
+
     // just some good 'ol JS fun with objects and arrays
     // build up the data by linking speakers to sessions
     this.data = data.json();
 
+
+    // luu lai tracks của tung session
     this.data.tracks = [];
 
     // loop through each day in the schedule
