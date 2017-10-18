@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component , ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 import { NavController } from 'ionic-angular';
@@ -15,17 +15,14 @@ import { TabsPage } from '../tabs-page/tabs-page';
   templateUrl: 'signup.html'
 })
 export class SignupPage {
-  signup: UserOptions = { username: '', password: '' };
+  
   submitted = false;
-
+  @ViewChild ('username') username:any;
+  @ViewChild ('password') password:any;
   constructor(public navCtrl: NavController, public userData: UserData) {}
 
-  onSignup(form: NgForm) {
-    this.submitted = true;
-
-    if (form.valid) {
-      this.userData.signup(this.signup.username);
+  onSignup() {
+      this.userData.signup(this.username.value,this.password.value,3);
       this.navCtrl.push(TabsPage);
-    }
   }
 }

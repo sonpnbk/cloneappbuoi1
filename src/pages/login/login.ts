@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component ,ViewChild} from '@angular/core';
 import { NgForm } from '@angular/forms';
 
-import { NavController } from 'ionic-angular';
+import { NavController, ToastController } from 'ionic-angular';
 
 import { UserData } from '../../providers/user-data';
 
@@ -16,19 +16,50 @@ import { SignupPage } from '../signup/signup';
   templateUrl: 'login.html'
 })
 export class LoginPage {
-  login: UserOptions = { username: '', password: '' };
+
+  @ViewChild('username') username: any;
+  @ViewChild('password') password: any;
   submitted = false;
+  public usernameold :any;
+  public passwordold :any;
+  constructor(public navCtrl: NavController, public toast: ToastController, public userData: UserData) {
+      this.usernameold = this.userData.getUsername();
+      this.passwordold = this.userData.getPassword();
+   }
 
-  constructor(public navCtrl: NavController, public userData: UserData) { }
-
-  onLogin(form: NgForm) {
-    this.submitted = true;
-
-    if (form.valid) {
-      this.userData.login(this.login.username);
-      this.navCtrl.push(TabsPage);
+  onLogin() {
+    console.log(this.usernameold);
+    //this.submitted = true;
+    
+  //  console.log(this.userData.login(this.username.value,this.password.value).value);
+  //  if (form.valid) {
+   /* if(this.username.value == ''){
+      const toast = this.toast.create({
+        message: 'Vui long dien ten tai khoan',
+        duration: 3000
+      });
+      toast.present();
+    }else
+    if(this.password.value == ''){
+      const toast = this.toast.create({
+        message: 'Vui long dien mat khau',
+        duration: 3000
+      });
+      toast.present();
     }
-  }
+    if(this.username.value != '' && this.password.value != ''){
+   if(this.userData.login(this.username.value,this.password.value)){
+    this.navCtrl.push(TabsPage);
+   }else{
+    const toast = this.toast.create({
+      message: 'Mat khau hoac tai khoan khong chinh xac',
+      duration: 3000
+    });
+    toast.present();
+   }
+  }*/
+
+}
 
   onSignup() {
     this.navCtrl.push(SignupPage);

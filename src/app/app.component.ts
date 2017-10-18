@@ -15,7 +15,6 @@ import { TutorialPage } from '../pages/tutorial/tutorial';
 import { SchedulePage } from '../pages/schedule/schedule';
 import { SpeakerListPage } from '../pages/speaker-list/speaker-list';
 import { SupportPage } from '../pages/support/support';
-
 import { ConferenceData } from '../providers/conference-data';
 import { UserData } from '../providers/user-data';
 
