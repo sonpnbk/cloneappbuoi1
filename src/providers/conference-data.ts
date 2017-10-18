@@ -14,24 +14,38 @@ export class ConferenceData {
   data: any;
 
   constructor(public http: Http, public user: UserData) { }
-
+  // đọc file jon
   load(): any {
+    // neu da ton tại data
     if (this.data) {
       return Observable.of(this.data);
     } else {
+      // neu chua co thi doc data trong assets với http-json
       return this.http.get('assets/data/data.json')
         .map(this.processData, this);
     }
   }
 
+  //ham xu ly chuoi json nhan duoc
   processData(data: any) {
-    // just some good 'ol JS fun with objects and arrays
-    // build up the data by linking speakers to sessions
+
+
     this.data = data.json();
 
-    this.data.tracks = [];
 
-    // loop through each day in the schedule
+    // luu lai tracks của tung session
+    this.data.tracks = [];
+    this.data.speakerNames = [];
+
+    //câu trúc chuỗi json
+    /*day{
+        groups{
+          time:
+          session{
+
+          }
+        }
+    }*/
     this.data.schedule.forEach((day: any) => {
       // loop through each timeline group in the day
       day.groups.forEach((group: any) => {
@@ -56,18 +70,32 @@ export class ConferenceData {
               }
             });
           }
+          if(session.speakerNames){
+            session.speakerNames.forEach((speakerName:any)=>{
+              if(this.data.speakerNames.indexOf(speakerName)<0){
+                this.data.speakerNames.push(speakerName);
+              }
+            })
+          }
         });
       });
     });
 
     return this.data;
   }
-
+  // xu ly time line
+  // bao gồm các gia trị nhập vào gồm
+  /*
+  dayindex: ngay 
+  querytext: chuỗi tìn kiêm
+  excludeTrack: mảng trách
+  segment: gia tri all hoặc favorite 
+   */
   getTimeline(dayIndex: number, queryText = '', excludeTracks: any[] = [], segment = 'all') {
     return this.load().map((data: any) => {
       let day = data.schedule[dayIndex];
       day.shownSessions = 0;
-
+      // chuyển chuỗi thành chũ thường và loại bỏ các ký tự
       queryText = queryText.toLowerCase().replace(/,|\.|-/g, ' ');
       let queryWords = queryText.split(' ').filter(w => !!w.trim().length);
 
@@ -130,7 +158,7 @@ export class ConferenceData {
     session.hide = !(matchesQueryText && matchesTracks && matchesSegment);
   }
 
-  getSpeakers() {
+  getSpeakers(arrSpeakers:any[]) {
     return this.load().map((data: any) => {
       return data.speakers.sort((a: any, b: any) => {
         let aName = a.name.split(' ').pop();
