@@ -9,7 +9,10 @@ export class UserData {
   arrfavorites: string[] = [];//mang favorite
   HAS_LOGGED_IN = 'hasLoggedIn';
   HAS_SEEN_TUTORIAL = 'hasSeenTutorial';
-
+  public usernameOld : string;
+  public passwordOld: string;
+  // neu la 1: thi login la 2 thi logout la 3 thi signin
+  eventLogin: any;
   constructor(
     public events: Events,
     public storage: Storage
@@ -33,37 +36,51 @@ export class UserData {
     }
   };
 
-  login(username: string): void {
-    this.storage.set(this.HAS_LOGGED_IN, true);
-    this.setUsername(username);
-    this.events.publish('user:login');
+  login(): string {
+    this.storage.get('password').then((value)=>{
+      this.usernameOld = value;
+    });
+    console.log(this.usernameOld);
+    return this.usernameOld;
   };
 
-  signup(username: string): void {
-    this.storage.set(this.HAS_LOGGED_IN, true);
+  signup(username: string, password: string, eventLogin:any): void {
+    if(eventLogin == 3){
     this.setUsername(username);
+    this.setPassword(password);
     this.events.publish('user:signup');
+    }
   };
 
   logout(): void {
     this.storage.remove(this.HAS_LOGGED_IN);
-    this.storage.remove('username');
     this.events.publish('user:logout');
   };
 
   setUsername(username: string): void {
     this.storage.set('username', username);
   };
-
-  getUsername(): Promise<string> {
-    return this.storage.get('username').then((value) => {
-      return value;
+  setPassword(password:string):void{
+    this.storage.set('password',password);
+  }
+  getPassword(): string {
+    this.storage.get('password').then((value)=>{
+      this.passwordOld = value;
     });
+    console.log(this.passwordOld);
+    return this.passwordOld;
+  };
+  getUsername():  string {
+    this.storage.get('username').then((value)=>{
+      this.usernameOld = value;
+    });
+    console.log(this.usernameOld);
+    return this.usernameOld;
   };
 
   hasLoggedIn(): Promise<boolean> {
-    return this.storage.get(this.HAS_LOGGED_IN).then((value) => {
-      return value === true;
+    return this.storage.get('username').then((value )=> {
+      return value;
     });
   };
 

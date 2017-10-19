@@ -11,6 +11,7 @@ import { UserData } from '../../providers/user-data';
 })
 export class AccountPage {
   username: string;
+  password: string;
 
   constructor(public alertCtrl: AlertController, public nav: NavController, public userData: UserData) {
 
@@ -18,6 +19,7 @@ export class AccountPage {
 
   ngAfterViewInit() {
     this.getUsername();
+    this.getPassword();
   }
 
   updatePicture() {
@@ -51,13 +53,31 @@ export class AccountPage {
   }
 
   getUsername() {
-    this.userData.getUsername().then((username) => {
-      this.username = username;
-    });
+  
   }
 
   changePassword() {
-    console.log('Clicked to change password');
+    let alert = this.alertCtrl.create({
+      title: 'Change password',
+      buttons: [
+        'Cancel'
+      ]
+    });
+    alert.addInput({
+      name: 'password',
+      value: this.password,
+    });
+    alert.addButton({
+      text: 'Ok',
+      handler: (data: any) => {
+        this.userData.setPassword(data.password);
+        this.getPassword();
+      }
+    });
+
+    alert.present();
+  }
+  getPassword() {
   }
 
   logout() {

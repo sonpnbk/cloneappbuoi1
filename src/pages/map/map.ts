@@ -21,8 +21,8 @@ export class MapPage {
     this.loadMap();
   }
   loadMap(){
-    const location = new google.maps.LatLng('21.027764','105.834160');
-    const options ={
+    const location = new google.maps.LatLng('20.429117','106.170969');
+    const options = {
       center: location,
       zoom:10
     };
