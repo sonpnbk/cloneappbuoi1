@@ -14,7 +14,7 @@
 
     <ion-buttons end>
       <button ion-button icon-only (click)="presentFilter()">
-        <ion-icon name="menu" md="md-options"></ion-icon>
+        <ion-icon name="more" ></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -43,7 +43,7 @@
         </ion-label>
       </ion-item-divider>
 
-      <ion-item-sliding *ngFor="let session of group.sessions" #slidingItem [attr.track]="session.tracks[0] | lowercase" [hidden]="session.hide">
+      <ion-item-sliding style="padding-left:10px" *ngFor="let session of group.sessions" #slidingItem [attr.track]="session.tracks[0] | lowercase" [hidden]="session.hide">
 
         <button ion-item (click)="goToSessionDetail(session)">
           <h3>{{session.name}}</h3>
@@ -69,8 +69,8 @@
 
   </ion-list>
 
-  <ion-list-header [hidden]="shownSessions == 0">
-      No Sessions Found
+  <ion-list-header [hidden]="shownSessions > 0">
+      Không có session
   </ion-list-header>
 
   <ion-fab bottom right #fab>

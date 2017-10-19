@@ -17,7 +17,7 @@
   <ion-list>
     <ion-list-header>All speaker</ion-list-header>
 
-    <ion-item *ngFor="let speakerName of speakerNames" [attr.track]="speakerNames.name | lowercase">
+    <ion-item *ngFor="let speakerName of speakerNames" [attr.speakerName]="speakerNames.name | lowercase">
       <span item-start class="dot"></span>
       <ion-label>{{speakerName.name}}</ion-label>
       <ion-toggle [(ngModel)]="speakerName.isChecked" color="secondary"></ion-toggle>

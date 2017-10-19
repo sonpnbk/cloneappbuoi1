@@ -17,10 +17,5 @@ $categories: (
 }
 
 page-schedule {
-  @each $track, $value in auxiliary-categories() {
-   ion-item-sliding[track=#{$track}] ion-label {
-     border-left: 1px solid $value;
-     padding-left: 10px;
-   }
-  }
+
 }

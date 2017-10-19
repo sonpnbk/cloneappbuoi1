@@ -54,6 +54,9 @@ export class ConferenceData {
           session.speakers = [];
           if (session.speakerNames) {
             session.speakerNames.forEach((speakerName: any) => {
+              if(this.data.speakerNames.indexOf(speakerName)<0){
+                this.data.speakerNames.push(speakerName);
+              }
               let speaker = this.data.speakers.find((s: any) => s.name === speakerName);
               if (speaker) {
                 session.speakers.push(speaker);
@@ -69,13 +72,6 @@ export class ConferenceData {
                 this.data.tracks.push(track);
               }
             });
-          }
-          if(session.speakerNames){
-            session.speakerNames.forEach((speakerName:any)=>{
-              if(this.data.speakerNames.indexOf(speakerName)<0){
-                this.data.speakerNames.push(speakerName);
-              }
-            })
           }
         });
       });
@@ -98,7 +94,7 @@ export class ConferenceData {
       // chuyển chuỗi thành chũ thường và loại bỏ các ký tự
       queryText = queryText.toLowerCase().replace(/,|\.|-/g, ' ');
       let queryWords = queryText.split(' ').filter(w => !!w.trim().length);
-
+      
       day.groups.forEach((group: any) => {
         group.hide = true;
 
