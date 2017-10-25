@@ -1,0 +1,49 @@
+<ion-header>
+    <ion-toolbar>
+      <ion-buttons start>
+        <button ion-button (click)="dismiss()">Cancel</button>
+      </ion-buttons>
+  
+      <ion-title>
+        Settings
+      </ion-title>
+  
+      <ion-buttons end>
+        <button ion-button (click)="applyFilters()" strong>Ok</button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content class="outer-content">
+  
+    <ion-list>
+      <ion-list-header>Setting</ion-list-header>
+      <ion-item>
+          <ion-icon name="volume-down" item-start ></ion-icon>
+        <ion-label>Sound</ion-label>
+        <ion-toggle color="secondary"></ion-toggle>
+      </ion-item>
+      <ion-item>
+          <ion-icon name="baseball" item-start ></ion-icon>
+        <ion-label>Vibrate</ion-label>
+        <ion-toggle color="secondary"></ion-toggle>
+      </ion-item>
+      <ion-item>
+          <ion-icon name="notifications" item-start></ion-icon>
+          <ion-label style="color:#000000">Notifications</ion-label>
+          <ion-select>
+            <ion-option value="Always" selected>Always</ion-option>
+            <ion-option value="Before 5 minute">Before 5 minute</ion-option>
+            <ion-option value="Before 10 minute">Before 10 minute</ion-option>
+            <ion-option value="Off">Off</ion-option>
+          </ion-select>
+        </ion-item>
+    </ion-list>
+    <ion-list>
+      <button ion-item (click)="resetFilters()" detail-none class="reset-filters">
+        Reset setting
+      </button>
+    </ion-list>
+  
+  </ion-content>
+  

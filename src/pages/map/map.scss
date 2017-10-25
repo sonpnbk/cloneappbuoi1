@@ -2,7 +2,7 @@
 page-map {
   background: rgb(229, 227, 223);
   #map{
-    height: 50%;
+    height: 100%;
   } 
   html, body {
     height: 100%;
@@ -32,6 +32,7 @@ page-map {
   .title {
     font-weight: bold;
   }
+
   #infowindow-content {
     display: none;
   }
