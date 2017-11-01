@@ -36,11 +36,18 @@ import { DatabaseProvider} from '../providers/database/database';
 import { GoogleMaps} from '@ionic-native/google-maps';
 import { SettingsPage} from '../pages/settings/settings';
 import {LocalNotifications} from '@ionic-native/local-notifications';
+import {Calendar} from '@ionic-native/calendar';
+import {EventCalendarComponent } from '../components/event-calendar/event-calendar';
+import {AddnewjobPage} from '../pages/addnewjob/addnewjob';
+import { CalendarModule  } from 'ionic3-calendar';
+import { DatePicker } from '@ionic-native/date-picker';
 @NgModule({
   declarations: [
     ConferenceApp,
     AboutPage,
     AccountPage,
+    AddnewjobPage,
+    EventCalendarComponent,
     SqlitePage,
     LoginPage,
     SettingsPage,
@@ -60,6 +67,7 @@ import {LocalNotifications} from '@ionic-native/local-notifications';
   imports: [
     BrowserModule,
     HttpModule,
+    CalendarModule,
     IonicModule.forRoot(ConferenceApp, {}, {
       links: [
         { component: TabsPage, name: 'TabsPage', segment: 'tabs-page' },
@@ -98,6 +106,7 @@ import {LocalNotifications} from '@ionic-native/local-notifications';
     SpeakerDetailPage,
     SpeakerListPage,
     TabsPage,
+    AddnewjobPage,
     TutorialPage,
     SupportPage
   ],
@@ -112,6 +121,8 @@ import {LocalNotifications} from '@ionic-native/local-notifications';
     Broadcaster,
     DatabaseProvider,
     SQLitePorter,
+    DatePicker,
+    Calendar,
     LocalNotifications,
     SplashScreen
   ]

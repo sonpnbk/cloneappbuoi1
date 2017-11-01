@@ -45,23 +45,47 @@ export class DatabaseProvider {
       });
   }
  
-  addDatlich(ngay, thoigianbatdau, thoigianketthuc, tieude, noidung) {
-    let data = [ngay, thoigianbatdau, thoigianketthuc, tieude, noidung];
-    return this.database.executeSql("INSERT INTO datlich (ngay, thoigianbatdau, thoigianketthuc, tieude, noidung) VALUES (?, ?, ?, ?, ?)", data).then(data => {
+  addDatlich(ngay, thoigianbatdau, thoigianketthuc, tieude, noidung,thongbao,buoi) {
+    let data = [ngay, thoigianbatdau, thoigianketthuc, tieude, noidung, thongbao, buoi];
+    return this.database.executeSql("INSERT INTO datlich (ngay, thoigianbatdau, thoigianketthuc, tieude, noidung, thongbao, buoi) VALUES (?, ?, ?, ?, ?, ?, ?)", data).then(data => {
       return data;
     }, err => {
       console.log('Error: ', err);
       return err;
     });
   }
- 
+ deleteDatlic(id:any){
+   let data= 'DELETE from datlich where id = '+ id;
+  return this.database.executeSql(data,id).then(data=>{
+    return data;
+  }, err => {
+    console.log('Error: ', err);
+    return err;
+  });
+ }
   getAllDatlichs() {
     return this.database.executeSql("SELECT * FROM datlich", []).then((data) => {
       let datlichs = [];
       if (data.rows.length > 0) {
         for (var i = 0; i < data.rows.length; i++) {
-          datlichs.push({ ngay: data.rows.item(i).ngay,thoigianbatdau: data.rows.item(i).thoigianbatdau,thoigianketthuc: data.rows.item(i).thoigianketthuc, tieude: data.rows.item(i).tieude, noidung: data.rows.item(i).noidung });
+          datlichs.push({id: data.rows.item(i).id, ngay: data.rows.item(i).ngay,thoigianbatdau: data.rows.item(i).thoigianbatdau,thoigianketthuc: data.rows.item(i).thoigianketthuc, tieude: data.rows.item(i).tieude, noidung: data.rows.item(i).noidung, thongbao: data.rows.item(1).thongbao, buoi: data.rows.item(i).buoi });
         }
+      }
+      return datlichs;
+    }, err => {
+      console.log('Error: ', err);
+      return [];
+    });
+  }
+  getDayDatlichs(day:string) {
+    return this.database.executeSql("SELECT * FROM datlich" , []).then((data) => {
+      let datlichs = [];
+      if (data.rows.length > 0) {
+        for (var i = 0; i < data.rows.length; i++) {
+          if(data.rows.item(i).ngay==day){
+          datlichs.push({id: data.rows.item(i).id, ngay: data.rows.item(i).ngay,thoigianbatdau: data.rows.item(i).thoigianbatdau,thoigianketthuc: data.rows.item(i).thoigianketthuc, tieude: data.rows.item(i).tieude, noidung: data.rows.item(i).noidung, thongbao: data.rows.item(1).thongbao, buoi: data.rows.item(i).buoi  });
+        }
+      }
       }
       return datlichs;
     }, err => {

@@ -1,164 +1,80 @@
-import { Component,Output,EventEmitter} from '@angular/core';
-import {AlertController,ActionSheetController, Keyboard,IonicPage,Events,LoadingController, ModalController,NavController,ToastController, NavParams,Platform ,Refresher } from 'ionic-angular';
-import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
-import { DatabaseProvider } from './../../providers/database/database';
-import { SettingsPage} from '../settings/settings';
-import {Calendar} from '@ionic-native/calendar';
-import {Broadcaster} from '@ionic-native/broadcaster';
-import {AddnewjobPage} from '../addnewjob/addnewjob';
-import { DatePicker } from '@ionic-native/date-picker';
+import { Component,ViewChild,Output ,EventEmitter } from '@angular/core';
+import { IonicPage, NavController, NavParams,ToastController,LoadingController,ViewController } from 'ionic-angular';
+import {DatabaseProvider} from '../../providers/database/database';
+import { Calendar } from '@ionic-native/calendar';
 import * as moment from 'moment';
 import * as _ from "lodash";
+
 /**
- * Generated class for the SqlitePage page.
+ * Generated class for the AddnewjobPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
-const DATA_FILE_NAME:string = "cloneapp.db"; 
+
 @IonicPage()
 @Component({
-  selector: 'page-sqlite',
-  templateUrl: 'sqlite.html',
+  selector: 'page-addnewjob',
+  templateUrl: 'addnewjob.html',
 })
-
-export class SqlitePage {
-  datlichs = [];
+export class AddnewjobPage {
+  datlich = {};
   DayDatlich:string;
- private mindate:string;
- forgot = true;
- mdate = new Date();
- calendarsegment= 'days';
- @Output() onDaySelect = new EventEmitter<dateObj>();
- currentYear: number;  
- currentMonth: number;
- ngaydatlich:string;
- currentDate: number;
- currentDay: number;
- displayYear: number;
- displayMonth: number;
- displayDay: number;
- dateArray: Array<dateObj> = [];
- weekArray = [];
- lastSelect: number = 0; 
- weekHead: string[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  constructor(private datePicker: DatePicker,public alertCtrl:AlertController,public actionSheetCtrl: ActionSheetController,public broadcaster:Broadcaster,public keyboard: Keyboard,public event:Events,public loadingCtrl:LoadingController,public modalCtrl:ModalController,public toastCtrl:ToastController,public navCtrl: NavController, private databaseprovider: DatabaseProvider, private platform: Platform) {
+  mdate = new Date();
+  @Output() onDaySelect = new EventEmitter<dateObj>();
+      currentYear: number;  
+      currentMonth: number;
+      ngaydatlich:string;
+      currentDate: number;
+      currentDay: number;
+      displayYear: number;
+      displayMonth: number;
+      displayDay: number;
+      dateArray: Array<dateObj> = [];
+      weekArray = [];
+      lastSelect: number = 0; 
+      forgot = false;
+      weekHead: string[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  constructor(public calendar:Calendar,public viewCtrl: ViewController,private databaseprovider: DatabaseProvider,public toastCtrl:ToastController,public loadingCtrl:LoadingController,public navCtrl: NavController, public navParams: NavParams) {
     this.DayDatlich =this.mdate.toLocaleDateString();
-    this.mdate.setHours(this.mdate.getHours()-(this.mdate.getTimezoneOffset()/60));
-    this.mindate = this.mdate.toTimeString();
     this.currentYear = moment().year();
     this.currentMonth = moment().month();
     this.currentDate = moment().date();
     this.currentDay = moment().day();
-    this.databaseprovider.getDatabaseState().subscribe(rdy => {
-      if (rdy) {
-        this.broadcaster.fireNativeEvent('event-cal',{});    
-        this.loadDatlichData(this.DayDatlich);
-      }
+
+  }
+
+  ionViewDidLoad() {
+    this.datlich['thoigianbatdau']='08:00';
+    this.datlich['thoigianketthuc']='09:00';
+  }
+  addDatlich() {
+    console.log(this.DayDatlich);
+    let loader = this.loadingCtrl.create({
+      content: "Please wait...",
+      duration: 3000
     });
-  
-    
+    loader.present();
+    if((this.datlich['noidung']!=null)&&(this.datlich['thoigianbatdau']!=null)&&(this.datlich['thoigianketthuc']!=null)&&(this.datlich['tieude']!=null&&(this.DayDatlich >= this.mdate.toLocaleDateString()))){
+    this.databaseprovider.addDatlich(this.DayDatlich,this.datlich['thoigianbatdau'],this.datlich['thoigianketthuc'], this.datlich['tieude'], this.datlich['noidung'],this.datlich['thongbao'],"morning");
+    this.datlich = {};
+    this.dismiss();
+  }
+  else{
+    const toast = this.toastCtrl.create({
+      message: 'error',
+      duration: 3000
+    });
+    toast.present();
+   
   }
  
-  loadDatlichData(day:string) {
-    this.broadcaster.fireNativeEvent('event-cal',{});    
-    this.databaseprovider.getDayDatlichs(day).then(data => {
-      this.datlichs = data;
-    })
-  }
-  doRefresh(refresher: Refresher,day:string) {
-    day=this.DayDatlich;
-    this.loadDatlichData(new Date().toLocaleDateString());
-   
-      setTimeout(() => {
-        refresher.complete();
-        let loader = this.loadingCtrl.create({
-          content: "Please wait...",
-          duration: 1000
-        });
-        loader.present();
-      }, 1000);
- 
-  }
 
-  closeCallback() {
-    // call what ever functionality you want on keyboard close
-    console.log('Closing time');
   }
-  createEventCalendar(){
-    
-  }
-  goCreated(){
-    let modal = this.modalCtrl.create(AddnewjobPage);
-    modal.present();
-
-    modal.onWillDismiss((data: any[]) => {
-      this.loadDatlichData(new Date().toLocaleDateString());
-    });
-  }
-  getOneJob(dat:any){
-   
-    let actionSheet = this.actionSheetCtrl.create({
-      title: dat.tieude,
-      buttons: [
-        {
-          text: dat.thoigianbatdau+' - '+dat.thoigianketthuc,
-          role: 'destructive',
-          icon: 'time',
-        }
-        ,{
-          text: dat.noidung,
-          icon: 'text',
-        }
-        ,{
-          text: dat.buoi,
-          icon: 'menu',
-          handler: () => {
-            console.log('Archive clicked');
-          }
-        }
-        ,{
-          text: 'Edit',
-          role: 'Edit',
-          icon: 'brush',
-          handler: () => {
-            console.log('Cancel clicked');
-          }
-        }
-        ,{
-          text: 'Remove',
-          role: 'Remove',
-          icon:'remove-circle',
-          handler: () => {
-            let alert = this.alertCtrl.create({
-              title: 'Remove job',
-              buttons: [{
-                text: 'OK',
-                handler: () => {
-                  this.xoaDatlich(dat.id);
-                }
-              }]
-            });
-            alert.present();
-          }
-        }
-      ]
-    });
-    actionSheet.present();
-  }
-
-  setTitle(){
-    this.datePicker.show({
-      date: new Date(),
-      mode: 'date',
-      androidTheme: this.datePicker.ANDROID_THEMES.THEME_HOLO_DARK
-    }).then(
-      date => {
-        this.DayDatlich=date.toLocaleDateString();
-        this.loadDatlichData(this.DayDatlich);
-      },
-      err => console.log('Error occurred while getting date: ', err)
-    );
+  dismiss() {
+    // using the injected ViewController this page
+    // can "dismiss" itself and pass back data
+    this.viewCtrl.dismiss();
   }
   ngOnInit() {
     this.today()
@@ -310,19 +226,7 @@ daySelect(day, i, j) {
     this.onDaySelect.emit(day);
     console.log(this.DayDatlich >= this.mdate.toLocaleDateString());
 }
-xoaDatlich(id:any){
-  this.databaseprovider.deleteDatlic(id);
-  this.loadDatlichData(this.DayDatlich);
 }
-setForgot(){
-  if(this.calendarsegment==='Calendar'){
-    this.forgot=false;
-  }else if(this.calendarsegment==='days'){
-    this.forgot=true;
-  }
-}
-}
-
 
 interface dateObj {
 year: number,

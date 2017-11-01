@@ -1,71 +1,79 @@
 <ion-header>
   <ion-navbar no-border-bottom>
-    <button ion-button menuToggle>
+    <button ion-button menuToggle style="border: 1px solid #fff">
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title >Today : {{DayDatlich}}</ion-title>
+    <ion-title >{{DayDatlich}}</ion-title>
   
     <ion-buttons end>
-        <button ion-button icon-only (click)="gosettings()">
-          <ion-icon name="settings"  ></ion-icon>
+        <button ion-button icon-only style="border: 1px solid #fff" (click)="setTitle()">
+          <ion-icon name="calendar"></ion-icon>
         </button>
       </ion-buttons>
   </ion-navbar>
   
 </ion-header>
  
-<ion-content style="background-color:aliceblue;">
-  <ion-list style="background-color:antiquewhite;margin:10px;"> 
-      <ion-item>
-          <ion-icon name="pricetag" item-start></ion-icon>
-          <ion-input [(ngModel)]="datlich.tieude" placeholder="Title"></ion-input>
-        </ion-item>
-        <ion-item>
-            <ion-icon name="text" item-start></ion-icon>
-            <ion-input [(ngModel)]="datlich.noidung" placeholder="Content"></ion-input>
-          </ion-item>
-          <ion-item>
-              <ion-icon name="time" item-start ></ion-icon>
-              <ion-label>
-                 Start time: 
-                </ion-label>
-              <ion-datetime  displayFormat="HH:mm" pickerFormat="hh mm a"  [(ngModel)]="datlich.thoigianbatdau"></ion-datetime>
-            </ion-item>
-            <ion-item>
-                <ion-icon name="time" item-start ></ion-icon>
-                <ion-label>
-                    End time: 
-                   </ion-label>
-                <ion-datetime  displayFormat="HH:mm" pickerFormat="hh mm a"  [(ngModel)]="datlich.thoigianketthuc"></ion-datetime>
-            </ion-item>
+<ion-content class="allsql" [ngClass]="['location']">
+    <ion-segment [(ngModel)]="calendarsegment" (click)="setForgot()">
+        <ion-segment-button value="days" style="color:#fff;background: #1ccfb7;">
+          Days
+        </ion-segment-button>
+        <ion-segment-button value="Weeks" style="color:#fff;background: #1ccfb7;">
+          Weeks
+        </ion-segment-button>
+        <ion-segment-button value="Calendar" style="color:#fff;background: #1ccfb7;">
+            Calendar
+          </ion-segment-button>
 
-      <button ion-button full color="danger" (click)="addDatlich()">
-        <ion-icon name="create" item-start></ion-icon>
-        Add New Info</button>
-    </ion-list>    
- 
+      </ion-segment>  
+      <ion-grid [hidden]="forgot">
+          <ion-row justify-content-center>
+            <ion-col col-auto (click)="back()">
+              <ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>
+            </ion-col>
+            <ion-col col-auto>
+              <div>{{displayDay}}/{{displayMonth + 1}}/{{displayYear}}</div>
+            </ion-col>
+            <ion-col col-auto (click)="forward()">
+              <ion-icon ios="ios-arrow-forward" md="md-arrow-forward"></ion-icon>
+            </ion-col>
+          </ion-row>
+        
+          <ion-row>
+            <ion-col class="center calendar-header-col" *ngFor="let head of weekHead">{{head}}</ion-col>
+          </ion-row>
+        
+          <ion-row class="calendar-row" *ngFor="let week of weekArray;let i = index">
+            <ion-col class="center calendar-col" (click)="daySelect(day,i,j)" *ngFor="let day of week;let j = index" [ngClass]="[day.isThisMonth?'this-month':'not-this-month',day.isToday?'today':'',day.isHave?'have':'',day.isSelect?'select':'']">
+              {{day.date}}
+            </ion-col>
+          </ion-row>
+        
+        </ion-grid>
+  <ion-list [hidden]="!forgot" class="listJob" style="margin:5px;">
+    
+    <ion-item  style="margin-bottom:5px;background:#fff;" *ngFor="let dat of datlichs" (click)="getOneJob(dat)">
+        <div class="divItem" >
+           
+      <h2> {{ dat.thoigianbatdau }}</h2> 
+     <h2>{{ dat.thoigianketthuc}}</h2>
+          </div>
+          <div class="phuItem">
+            <h1 style="font-weight: bold;"><font color="#000000">{{ dat.tieude }}</font> </h1>
+          </div>
+    </ion-item>
+
+  
+  </ion-list>
   <ion-refresher (ionRefresh)="doRefresh($event)">
       <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
-
-  <ion-list style="margin:10px;">
-    <ion-item style="border: 1px solid #e99e12;background-color:antiquewhite;margin-bottom:10px;" *ngFor="let dat of datlichs">
-      <h2> From: {{ dat.thoigianbatdau }}</h2>
-      <h2> To: {{ dat.thoigianketthuc}}</h2>
-      <h1 style="color:#000000">{{ dat.tieude }} </h1>
-      <p style="white-space: pre-line"> {{ dat.noidung }}</p>
-            <button ion-button clear small color="primary" icon-start >
-              <ion-icon name="brush"></ion-icon>
-              Edit
-            </button>
-            <button ion-button clear small color="primary" icon-start>
-              <ion-icon name='remove-circle'></ion-icon>
-              Remove
-            </button>
-    </ion-item>
-    
-  </ion-list>
-  <ion-list-header>
-      Khong co session
+  <ion-list-header *ngIf="datlichs.length === 0">
+      Không có công việc nào trong ngày hôm nay
    </ion-list-header>
+   <ion-fab bottom right #fab>
+    <button ion-fab (click)="goCreated()"><ion-icon name="add" ></ion-icon></button>
+    </ion-fab>
+    <event-calendar></event-calendar>
 </ion-content>

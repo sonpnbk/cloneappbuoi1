@@ -1,0 +1,83 @@
+<!--
+  Generated template for the AddnewjobPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-toolbar>
+      <ion-buttons start>
+          <button ion-button (click)="dismiss()">Cancel</button>
+        </ion-buttons>
+    <ion-title>Add New Job</ion-title>
+  </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content padding>
+    <ion-list style="background-color:antiquewhite;margin:10px;"> 
+        <ion-item>
+            <ion-icon name="pricetag" item-start></ion-icon>
+            <ion-input [(ngModel)]="datlich.tieude" placeholder="Title"></ion-input>
+          </ion-item>
+          <ion-item>
+              <ion-icon name="text" item-start></ion-icon>
+              <ion-input [(ngModel)]="datlich.noidung" placeholder="Content"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-icon name="notifications" item-start></ion-icon>
+                <ion-label style="color:#000000">Notifications</ion-label>
+                <ion-select [(ngModel)]="datlich.thongbao">
+                  <ion-option value="Always" selected>Always</ion-option>
+                  <ion-option value="Before 5 minute">Before 5 minute</ion-option>
+                  <ion-option value="Before 10 minute">Before 10 minute</ion-option>
+                  <ion-option value="Off">Off</ion-option>
+                </ion-select>
+              </ion-item>
+            <ion-item>
+                <ion-icon name="time" item-start ></ion-icon>
+                <ion-label style="color:#000000">
+                   Start time: 
+                  </ion-label>
+                <ion-datetime  displayFormat="HH:mm A" pickerFormat="hh mm a"  [(ngModel)]="datlich.thoigianbatdau"></ion-datetime>
+              </ion-item>
+              <ion-item>
+                  <ion-icon name="time" item-start ></ion-icon>
+                  <ion-label style="color:#000000">
+                      End time: 
+                     </ion-label>
+                  <ion-datetime  displayFormat="HH:mm A" pickerFormat="hh mm a"  [(ngModel)]="datlich.thoigianketthuc"></ion-datetime>
+              </ion-item>
+  
+        <button ion-button full color="danger" (click)="addDatlich()">
+          <ion-icon name="create" item-start></ion-icon>
+          Add New Info</button>
+      </ion-list>   
+      <ion-grid [hidden]="forgot">
+          <ion-row justify-content-center>
+            <ion-col col-auto (click)="back()">
+              <ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>
+            </ion-col>
+            <ion-col col-auto>
+              <div>{{displayDay}}/{{displayMonth + 1}}/{{displayYear}}</div>
+            </ion-col>
+            <ion-col col-auto (click)="forward()">
+              <ion-icon ios="ios-arrow-forward" md="md-arrow-forward"></ion-icon>
+            </ion-col>
+          </ion-row>
+        
+          <ion-row>
+            <ion-col class="center calendar-header-col" *ngFor="let head of weekHead">{{head}}</ion-col>
+          </ion-row>
+        
+          <ion-row class="calendar-row" *ngFor="let week of weekArray;let i = index">
+            <ion-col class="center calendar-col" (click)="daySelect(day,i,j)" *ngFor="let day of week;let j = index" [ngClass]="[day.isThisMonth?'this-month':'not-this-month',day.isToday?'today':'',day.isHave?'have':'',day.isSelect?'select':'']">
+              {{day.date}}
+            </ion-col>
+          </ion-row>
+        
+        </ion-grid>
+      
+</ion-content>
